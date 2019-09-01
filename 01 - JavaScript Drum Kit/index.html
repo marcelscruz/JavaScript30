@@ -57,10 +57,15 @@
 
     <script>
       function playSound(e) {
-        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+        const keyCode = e.keyCode || e.path[1].dataset.key
+
+        console.log(keyCode)
+
+        const audio = document.querySelector(`audio[data-key="${keyCode}"]`)
+        const key = document.querySelector(`.key[data-key="${keyCode}"]`)
 
         if (!audio) return
+
         audio.currentTime = 0 // rewind to start to allow quick repetition
         audio.play()
         key.classList.add('playing')
@@ -72,10 +77,15 @@
         this.classList.remove('playing')
       }
 
+      function foo(e) {
+        console.log(e)
+      }
+
       const keys = document.querySelectorAll('.key')
-      keys.forEach(key =>
-        key.addEventListener('transitionend', removeTransition),
-      )
+      keys.forEach(key => {
+        key.addEventListener('transitionend', removeTransition)
+        key.addEventListener('touchstart', playSound)
+      })
 
       window.addEventListener('keydown', playSound)
     </script>
