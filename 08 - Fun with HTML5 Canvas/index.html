@@ -5,6 +5,7 @@
     <title>HTML5 Canvas</title>
   </head>
   <body>
+    <h1>Start drawing!</h1>
     <canvas id="draw" width="800" height="800"></canvas>
     <script>
       const canvas = document.querySelector('#draw')
@@ -24,6 +25,9 @@
       let direction = true
 
       function draw(e) {
+        const x = e.targetTouches ? e.targetTouches[0].pageX : e.offsetX
+        const y = e.targetTouches ? e.targetTouches[0].pageY : e.offsetY
+
         if (!isDrawing) return
 
         ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
@@ -34,12 +38,13 @@
         ctx.moveTo(lastX, lastY)
 
         // go to
-        ctx.lineTo(e.offsetX, e.offsetY)
+        // ctx.lineTo(e.offsetX, e.offsetY)
+        ctx.lineTo(x, y)
 
         ctx.stroke()
 
-        lastX = e.offsetX
-        lastY = e.offsetY
+        lastX = x
+        lastY = y
 
         hue++
         if (hue >= 360) {
@@ -57,6 +62,14 @@
         }
       }
 
+      canvas.addEventListener('touchmove', draw)
+      canvas.addEventListener('touchend', () => (isDrawing = false))
+      canvas.addEventListener('touchstart', e => {
+        isDrawing = true
+        lastX = e.targetTouches[0].pageX
+        lastY = e.targetTouches[0].pageY
+      })
+
       canvas.addEventListener('mousemove', draw)
       canvas.addEventListener('mouseout', () => (isDrawing = false))
       canvas.addEventListener('mouseup', () => (isDrawing = false))
@@ -71,6 +84,20 @@
       html,
       body {
         margin: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      h1 {
+        opacity: 0.8;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+          'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 46px;
+        margin: 0;
+        pointer-events: none;
+        position: absolute;
+        right: 50px;
+        top: 30px;
       }
     </style>
   </body>
