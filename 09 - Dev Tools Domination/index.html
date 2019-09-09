@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+    <script>
+      const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }]
+
+      function makeGreen() {
+        const p = document.querySelector('p')
+        p.style.color = '#BADA55'
+        p.style.fontSize = '50px'
+      }
+
+      const p = document.querySelector('p')
+
+      // Show line that's changing and element's style, like function above:
+      // go into devtools elements, right click the element > Break on > attribute modifications
+
+      // Regular
+      console.log('hello')
+
+      // Interpolated
+      console.log('Hello I am %s string!', '🎱')
+      // console.log(`Hello I am ${name}`)
+
+      // Styled
+      console.log('%cThis is some next', 'font-size: 30px; background: red;')
+
+      // warning!
+      console.warn('Warning here!')
+
+      // Error :|
+      console.error('Error')
+
+      // Info
+      console.info('Some text goes here')
+
+      // Testing - Fires only if assertion is wrong
+      console.assert(1 === 2, 'that is wrong')
+
+      // clearing
+      // console.clear()
+
+      // Viewing DOM Elements
+      console.dir(p)
+
+      // Grouping together
+      dogs.forEach(dog => {
+        // console.group('dogs')
+        console.groupCollapsed('dogs')
+        console.log(`This is ${dog.name}.`)
+        console.log(`${dog.name} is ${dog.age} years old.`)
+        console.groupEnd('dogs')
+      })
+
+      // counting
+      console.count('Marcel')
+      console.count('Marcel')
+      console.count('Marcel')
+
+      // timing
+      console.time('fetching data')
+      fetch('https://api.github.com/users/marcelscruz')
+        .then(data => data.json())
+        .then(data => {
+          console.timeEnd('fetching data')
+          console.log(data)
+        })
+
+      // table
+      console.table(dogs)
+    </script>
+  </body>
+</html>
